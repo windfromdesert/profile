@@ -1,0 +1,40 @@
+import sys
+import string
+from datetime import datetime
+from pymongo import Connection                  # pymongo.connection
+from pymongo.errors import ConnectionFailure    # pymongo.errors.ConnectionFailure
+
+def main():
+    try:
+        c = Connection(host="localhost", port=27017)
+    except ConnectionFailure as e: 
+        sys.stderr.write("Could not connect to MongoDB: %s" % e)
+        sys.exit(1)
+    dbh = c["profile"]
+    assert dbh.connection == c
+    f = open('md',encoding='utf-8')
+    while 1:
+        lines = f.readlines(5000)
+        if not lines:
+            break
+        d = lines[0]
+        tag = lines[2]
+        title = lines[1]
+        beizhu = lines[3]
+        l = len(lines)
+        sj = ""
+        for i in range(5,l):
+            sj = sj + lines[i]
+        profile_doc = {
+            "riqi" : d,
+            "shijian" : sj,
+            "tag" : tag,
+            "title" : title,
+            "beizhu" : beizhu,
+            }
+        dbh.profile.insert(profile_doc, safe=True)
+        print('Successfully inserted')
+    f.close()
+
+if __name__ == "__main__":
+        main()

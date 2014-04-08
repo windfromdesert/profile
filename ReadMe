@@ -1,0 +1,23 @@
+## Profile 数据库说明文档
+
+
+数据库类型：Mongodb
+
+用途：个人归档文字
+
+数据库结构：
+
++   _id:系统自带
++   riqi:日期
++   shijian:事件
++   tag:标签分类
++   title:概括标题
++   beizhu:备注
+
+操作：
+
+查询输出文件：out.txt
+录入文字模板：md
+查询输入文件：search.py
+保存到数据库：insert.py
+恢复录入模板：dts.py
