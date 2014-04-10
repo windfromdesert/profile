@@ -22,20 +22,41 @@ func main() {
         panic(err)
     }
     defer session.Close()
-    var recs []Rec
     c := session.DB("profile").C("profile")
-    c.Find(nil).All(&recs)
-    list := ""
-    for _, v := range recs {
-        r := strings.Replace(v.Riqi,"\n","",-1)
-        t := strings.Replace(v.Tag,"\n","",-1)
-        list = list + r + "-" + t + "-" + v.Title
-    }
-    indexfile := "index"
-    f, err := os.Create(indexfile)
-    defer f.Close()
+    mdfile := "md"
+    fin, err := os.Open(mdfile)
+    defer fin.Close()
     if err != nil {
         panic(err)
     }
-    f.WriteString(list)
+    buf := make([]byte,1024)
+    text := ""
+    for {
+        n, _ := fin.Read(buf)
+        if 0 == n {  break }
+        text = text + string(buf[:n])
+    }
+    text2 := strings.Split(text,"\r\n\r\n")
+    text3 := strings.Split(text2[0],"\r\n")
+    sj := ""
+    for k, v := range text2 {
+        switch k {
+            case 0:
+            case len(text2)-1:
+                sj = sj + v
+            default:
+                sj = sj + v + "\n\n"
+        }
+    }
+    er := c.Insert(&Rec{
+        Id_:        bson.NewObjectId(),
+        Riqi:       text3[0],
+        Shijian:    sj,
+        Tag:        text3[2],
+        Title:      text3[1],
+        Beizhu:     text3[3],
+    })
+    if er != nil {
+        panic(er)
+    }
 }

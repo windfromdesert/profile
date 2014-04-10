@@ -29,7 +29,7 @@ func main() {
     for _, v := range recs {
         r := strings.Replace(v.Riqi,"\n","",-1)
         t := strings.Replace(v.Tag,"\n","",-1)
-        list = list + r + "-" + t + "-" + v.Title
+        list = list + r + "-" + t + "-" + v.Title + "\n"
     }
     indexfile := "index"
     f, err := os.Create(indexfile)

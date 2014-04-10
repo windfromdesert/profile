@@ -18,6 +18,10 @@
 
 查询输出文件：out.txt
 录入文字模板：md
-查询输入文件：search.py
-保存到数据库：insert.py
-恢复录入模板：dts.py
+查询：search.go
+存入：insert.go
+重置模板：reset.go
+删除记录：del.go
+更新记录：update.go
+
+表达式文件：sql.txt
